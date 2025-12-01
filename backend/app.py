@@ -1,18 +1,22 @@
 from flask import Flask, request, jsonify
-import os
-import requests
+import subprocess
 from prompts import CLINICAL_PROMPT, PATIENT_PROMPT
 
 app = Flask(__name__)
 
-OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
-MODEL_NAME = os.getenv("OLLAMA_MODEL", "llama3.2:8b")
+MODEL_NAME = "llama3.1:8b"  # your installed Ollama model
 
-def call_ollama(prompt, timeout=120):
-    payload = {"model": MODEL_NAME, "prompt": prompt, "temperature": 0.0}
-    resp = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
-    resp.raise_for_status()
-    return resp.json()
+def call_ollama(prompt):
+    """Run Ollama model via CLI and return output text."""
+    try:
+        # Pass the prompt directly as an argument
+        cmd = ["ollama", "run", MODEL_NAME, prompt]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise Exception(result.stderr)
+        return result.stdout.strip()
+    except Exception as e:
+        raise Exception(f"Ollama CLI call failed: {e}")
 
 @app.route("/api/clinical-summary", methods=["POST"])
 def clinical_summary():
@@ -23,12 +27,8 @@ def clinical_summary():
 
     prompt = CLINICAL_PROMPT.format(notes=notes)
     try:
-        model_out = call_ollama(prompt)
-        # Attempt to extract text safely from different Ollama responses
-        text = model_out.get("text") if isinstance(model_out, dict) else str(model_out)
-        if not text:
-            text = model_out.get("output", "")
-        return jsonify({"summary": text})
+        summary = call_ollama(prompt)
+        return jsonify({"summary": summary})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -41,11 +41,8 @@ def patient_summary():
 
     prompt = PATIENT_PROMPT.format(notes=notes)
     try:
-        model_out = call_ollama(prompt)
-        text = model_out.get("text") if isinstance(model_out, dict) else str(model_out)
-        if not text:
-            text = model_out.get("output", "")
-        return jsonify({"patient_summary": text})
+        summary = call_ollama(prompt)
+        return jsonify({"patient_summary": summary})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
