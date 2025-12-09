@@ -10,7 +10,7 @@ const downloadBtn = document.getElementById("downloadBtn");
 const copyBtn = document.getElementById("copyBtn");
 
 // =======================
-// 1️⃣ HANDLE SUMMARISE BUTTON
+// HANDLE SUMMARISE BUTTON
 // =======================
 
 summariseBtn.addEventListener("click", async () => {
@@ -44,32 +44,77 @@ summariseBtn.addEventListener("click", async () => {
 });
 
 // =======================
-// 2️⃣ UPLOAD TXT FILE
+// UPLOAD FILE
 // =======================
 
 uploadBtn.addEventListener("click", () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".txt";
+    fileInput.accept = ".txt, .docx, .pdf";
 
-    fileInput.onchange = (event) => {
+    fileInput.onchange = async (event) => {
         const file = event.target.files[0];
-
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            notesInput.value = reader.result;
-        };
+        // ⚠️ Use correct reader depending on file type
+        const fileName = file.name.toLowerCase();
 
-        reader.readAsText(file);
+        // 1️⃣ Handle TXT
+        if (fileName.endsWith(".txt")) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                notesInput.value = reader.result;
+            };
+            reader.readAsText(file);
+        }
+
+        // 2️⃣ Handle DOCX
+        else if (fileName.endsWith(".docx")) {
+            const arrayBuffer = await file.arrayBuffer();
+            mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                .then(result => {
+                    notesInput.value = result.value;
+                })
+                .catch(err => {
+                    alert("Error reading Word document");
+                    console.error(err);
+                });
+        }
+
+        // 3️⃣ Handle PDF
+        else if (fileName.endsWith(".pdf")) {
+            readPDF(file);
+        }
     };
 
     fileInput.click();
 });
 
+// PDF READER FUNCTION
+async function readPDF(file) {
+    const fileReader = new FileReader();
+
+    fileReader.onload = async function () {
+        const typedarray = new Uint8Array(this.result);
+
+        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+        let text = "";
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const pageText = content.items.map(item => item.str).join(" ");
+            text += pageText + "\n\n";
+        }
+
+        notesInput.value = text;
+    };
+
+    fileReader.readAsArrayBuffer(file);
+}
+
 // =======================
-// 3️⃣ DOWNLOAD SUMMARY (as TXT)
+//  DOWNLOAD SUMMARY (as TXT)
 // =======================
 
 downloadBtn.addEventListener("click", () => {
@@ -89,7 +134,7 @@ downloadBtn.addEventListener("click", () => {
 });
 
 // =======================
-// 4️⃣ COPY SUMMARY TO CLIPBOARD
+//  COPY SUMMARY TO CLIPBOARD
 // =======================
 
 copyBtn.addEventListener("click", () => {
