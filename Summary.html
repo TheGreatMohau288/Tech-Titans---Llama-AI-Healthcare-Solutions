@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinician Notes → Summary Automator</title>
+
+    <link rel="stylesheet" href="summaryDeco.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <h2>Clinician Notes → Summary Automator</h2>
+        <button class="logout-btn" onclick="window.location.href='login.html'"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+    </nav>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section">
+        <p>
+            This tool helps clinicians turn long, complex medical notes into clear, concise AI-generated summaries — 
+            improving documentation speed and quality for healthcare professionals.
+        </p>
+    </section>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+
+        <!-- LEFT PANEL -->
+        <div class="panel">
+            <h3><i class="fa-solid fa-stethoscope"></i> Clinician notes...</h3>
+
+            <textarea id="notesInput" placeholder="Enter clinician notes here..."></textarea>
+
+            <div class="left-actions">
+                <button class="icon-btn" id="uploadBtn" title="Upload .txt notes">
+                    <i class="fa-solid fa-upload"></i>
+                </button>
+
+                <button class="summarise-btn" id="summariseBtn">summarise</button>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="panel">
+            <h3><i class="fa-solid fa-brain"></i> AI summary..</h3>
+
+            <textarea id="summaryOutput" placeholder="AI summary will appear here..." readonly></textarea>
+
+            <div class="right-actions">
+                <button class="icon-btn" id="downloadBtn" title="Download summary">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+
+                <button class="icon-btn" id="copyBtn" title="Copy summary">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        Tech Titans - Healthcare AI Hackathon Project
+    </footer>
+
+    <script src="summaryLogic.js"></script>
+</body>
+</html>

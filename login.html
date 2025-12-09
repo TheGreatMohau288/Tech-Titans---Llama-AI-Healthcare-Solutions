@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - Clinician Notes Automator</title>
+
+    <link rel="stylesheet" href="summaryDeco.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <h2>Clinician Notes → Summary Automator</h2>
+       
+    </nav>
+
+    <!-- LOGIN CONTAINER -->
+    <div class="login-wrapper">
+        <h1 class="login-title">Ready to work? Log in!</h1>
+
+        <div class="login-card">
+
+            <!-- SOCIAL LOGINS -->
+            <button class="social-btn google">
+                <i class="fa-brands fa-google"></i> Continue with Google
+            </button>
+
+            <button class="social-btn facebook">
+                <i class="fa-brands fa-facebook"></i> Continue with Facebook
+            </button>
+
+            <button class="social-btn apple">
+                <i class="fa-brands fa-apple"></i> Continue with Apple
+            </button>
+
+            <!-- DIVIDER -->
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <!-- EMAIL INPUT -->
+            <input type="email" placeholder="Email" class="login-input">
+
+            <!-- PASSWORD INPUT -->
+            <div class="password-field">
+                <input type="password" placeholder="Password" class="login-input">
+                <i class="fa-solid fa-eye-slash toggle-password"></i>
+            </div>
+
+            <a href="#" class="forgot-link">Forgot password?</a>
+
+            <!-- LOGIN BUTTON -->
+            <button class="login-btn" onclick="window.location.href='Summary.html'">Log in</button>
+
+            <p class="signup-text">Don't have an account? <a href="createProfile.html">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        Tech Titans - Healthcare AI Hackathon Project
+    </footer>
+
+</body>
+</html>

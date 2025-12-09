@@ -1,0 +1,466 @@
+/* Fonts + Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+}
+
+/* NAVBAR */
+.navbar {
+    height: 60px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 3px solid #2a7bf6;
+}
+
+.navbar h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* MAIN LAYOUT */
+.main-container {
+    width: 90%;
+    margin: 30px auto;
+    display: flex;
+    gap: 15px;
+}
+
+/* PANELS */
+.panel {
+    flex: 1;
+    background: white;
+    border: 3px solid #2a7bf6;
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+.panel h3 {
+    margin-bottom: 10px;
+}
+
+textarea {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* BUTTONS BELOW TEXTAREA */
+.left-actions,
+.right-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+.right-actions {
+    justify-content: flex-end;
+}
+
+/* ICON BUTTONS */
+.upload-btn,
+.download-btn,
+.copy-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.upload-btn:hover,
+.download-btn:hover,
+.copy-btn:hover {
+    color: #2a7bf6;
+}
+
+/* SUMMARISE BUTTON */
+.summarise-btn {
+    background: #6ba67c;
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.summarise-btn:hover {
+    background: #5a8c67;
+}
+/* Reset + global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f0f2f5;
+}
+
+/* NAVBAR WITH GRADIENT */
+.navbar {
+    height: 60px;
+    background: linear-gradient(90deg, #0A8AA8, #3CC7DF);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.navbar h2 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+}
+
+/* ABOUT SECTION */
+.about-section {
+    width: 90%;
+    margin: 20px auto;
+    background: white;
+    padding: 15px 20px;
+    border-left: 5px solid #0A8AA8;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.about-section p {
+    color: #333;
+    font-size: 15px;
+}
+
+/* MAIN LAYOUT */
+.main-container {
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    gap: 15px;
+}
+
+/* PANELS */
+.panel {
+    flex: 1;
+    background: white;
+    border: 3px solid #2a7bf6;
+    border-radius: 4px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+.panel h3 {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #0A8AA8;
+    font-weight: bold;
+}
+
+/* TEXTAREAS */
+textarea {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 5px;
+}
+
+/* BUTTON ROWS */
+.left-actions,
+.right-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+/* ICON BUTTONS WITH TOOLTIP */
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    color: #2a7bf6;
+}
+
+/* SUMMARISE BUTTON */
+.summarise-btn {
+    background: #6ba67c;
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.summarise-btn:hover {
+    background: #5a8c67;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 15px;
+    margin-top: 20px;
+    color: #333;
+    background: white;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.08);
+    font-weight: bold;
+}
+
+/* LOGIN PAGE STYLING */
+
+.login-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.login-title {
+    font-size: 28px;
+    color: #1f2d3d;
+    margin-bottom: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* SOCIAL LOGIN BUTTONS */
+.social-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 30px;
+    border: 1px solid #d0d7e2;
+    font-size: 15px;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-btn:hover {
+    background: #f7f9fc;
+}
+
+.google i { color: #DB4437; }
+.facebook i { color: #1877F2; }
+.apple i { color: black; }
+
+/* DIVIDER */
+.divider {
+    text-align: center;
+    margin: 10px 0;
+    color: #666;
+    position: relative;
+}
+
+.divider span {
+    background: white;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #ccc;
+    top: 50%;
+    left: 0;
+    z-index: 1;
+}
+
+/* INPUT FIELDS */
+.login-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d0d7e2;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    color: #666;
+}
+
+/* FORGOT PASSWORD */
+.forgot-link {
+    text-align: right;
+    display: block;
+    font-size: 14px;
+    color: #2a7bf6;
+    margin-top: -10px;
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+    background: #0A8AA8;
+    color: white;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #056175;
+}
+
+/* SIGNUP TEXT */
+.signup-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.signup-text a {
+    color: #2a7bf6;
+    font-weight: bold;
+}
+
+/* PROFILE PAGE STYLING */
+
+.profile-wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.profile-title {
+    font-size: 28px;
+    color: #1f2d3d;
+    margin-bottom: 20px;
+}
+
+.profile-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* FIELD GROUP */
+.field-group {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field-group label {
+    font-weight: bold;
+    color: #0A8AA8;
+}
+
+.profile-input,
+.profile-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d0d7e2;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fafbfc;
+}
+
+.profile-input:focus,
+.profile-textarea:focus {
+    outline: 2px solid #0A8AA8;
+}
+
+.profile-textarea {
+    resize: none;
+    height: 100px;
+}
+
+/* SAVE BUTTON */
+.save-profile-btn {
+    background: #0A8AA8;
+    color: white;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+}
+
+.save-profile-btn:hover {
+    background: #056175;
+}
+
+/* LOGIN REDIRECT */
+.login-redirect {
+    font-size: 14px;
+    color: #333;
+}
+
+.login-redirect a {
+    color: #2a7bf6;
+    font-weight: bold;
+}
+

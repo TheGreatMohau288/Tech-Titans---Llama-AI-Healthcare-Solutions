@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile - Clinician Notes Automator</title>
+
+    <link rel="stylesheet" href="summaryDeco.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <h2>Clinician Notes → Summary Automator</h2>
+        
+    </nav>
+
+    <!-- PROFILE CREATION CONTAINER -->
+    <div class="profile-wrapper">
+        <h1 class="profile-title">Create Your Profile</h1>
+
+        <div class="profile-card">
+
+            <!-- FULL NAME -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-user"></i> Full Name</label>
+                <input type="text" class="profile-input" placeholder="Enter your full name">
+            </div>
+
+            <!-- EMAIL -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-envelope"></i> Email</label>
+                <input type="email" class="profile-input" placeholder="Enter your email">
+            </div>
+
+            <!-- ROLE -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-id-badge"></i> Role</label>
+                <select class="profile-input">
+                    <option disabled selected>Select your role</option>
+                    <option>Clinician</option>
+                    <option>Nurse</option>
+                    <option>Doctor</option>
+                    <option>Healthcare Student</option>
+                    <option>Administrator</option>
+                </select>
+            </div>
+
+            <!-- BIO -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-pen"></i> Bio</label>
+                <textarea class="profile-textarea" placeholder="Write a short bio..."></textarea>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-lock"></i> Password</label>
+                <input type="password" class="profile-input" placeholder="Create password">
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="field-group">
+                <label><i class="fa-solid fa-lock"></i> Confirm Password</label>
+                <input type="password" class="profile-input" placeholder="Re-enter password">
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button class="save-profile-btn">Save Profile</button>
+
+            <p class="login-redirect">Already have a profile? <a href="login.html">Log in</a></p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        Tech Titans - Healthcare AI Hackathon Project
+    </footer>
+
+</body>
+</html>
