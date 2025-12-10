@@ -1,0 +1,5 @@
+Flask>=2.0
+bcrypt>=4.0
+pytest>=7.0
+requests>=2.0
+llama-cpp-python>=0.1.0  # optional; used if LLM_PROVIDER=local

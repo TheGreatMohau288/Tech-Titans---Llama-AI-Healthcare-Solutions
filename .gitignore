@@ -1,5 +1,96 @@
-.env
-venv/
-# Python cache
-__pycache__/
-*.pyc
+# filepath: d:\Documents\Visual Studio Code\WeThinkCode Hackathon\Tech Titans MVP\app.py
+from flask import Flask, request, session, jsonify
+import os
+
+from sqlite_techtitans import init_db, create_user, verify_user, get_user
+from llama_client import generate as llm_generate
+
+app = Flask(__name__)
+app.secret_key = os.environ.get('APP_SECRET', 'replace-with-secure-secret')
+DB_PATH = os.environ.get('DB_PATH', 'data.db')
+
+init_db(DB_PATH)
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json() or {}
+    username = data.get('username', '').strip()
+    password = data.get('password', '')
+    if not username or not password:
+        return jsonify({'error': 'username and password required'}), 400
+    ok = create_user(username, password, path=DB_PATH)
+    return jsonify({'created': ok}), (201 if ok else 409)
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json() or {}
+    username = data.get('username', '').strip()
+    password = data.get('password', '')
+    if verify_user(username, password, path=DB_PATH):
+        session['user'] = username
+        return jsonify({'login': True})
+    return jsonify({'login': False}), 401
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user', None)
+    return jsonify({'logout': True})
+
+@app.route('/me')
+def me():
+    user = session.get('user')
+    if not user:
+        return jsonify({'user': None}), 401
+    info = get_user(user, path=DB_PATH)
+    if info:
+        info.pop('password_hash', None)
+    return jsonify({'user': info})
+
+@app.route('/ai/generate', methods=['POST'])
+def ai_generate():
+    user = session.get('user')
+    if not user:
+        return jsonify({'error': 'authentication required'}), 401
+    data = request.get_json() or {}
+    prompt = data.get('prompt', '').strip()
+    model = data.get('model')
+    if not prompt:
+        return jsonify({'error': 'prompt required'}), 400
+    try:
+        output = llm_generate(prompt, model=model)
+        return jsonify({'username': user, 'prompt': prompt, 'output': output})
+    except Exception as e:
+        return jsonify({'error': 'LLM request failed', 'detail': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, host='127.0.0.1', port=5000)
+
+
+
+''''python
+# filepath: d:\Documents\Visual Studio Code\WeThinkCode Hackathon\Tech Titans MVP\tests\test_llama_client.py
+import os
+import json
+import requests
+import pytest
+from sqlite_techtitans import init_db, create_user, verify_user
+import llama_client
+
+def test_generate_remote(monkeypatch, tmp_path):
+    # fake remote endpoint
+    def fake_post(url, json=None, headers=None, timeout=None):
+        class R:
+            def raise_for_status(self): pass
+            def json(self): return {"text": "echo: " + (json.get("prompt") or "")}
+        return R()
+    monkeypatch.setattr(requests, "post", fake_post)
+    os.environ['LLM_PROVIDER'] = 'remote'
+    res = llama_client.generate("hello world")
+    assert "echo: hello world" in res
+
+def test_auth_flow(tmp_path):
+    db = str(tmp_path / "db.sqlite")
+    init_db(db)
+    assert create_user("test", "pw", path=db)
+    assert verify_user("test", "pw", path=db)
+    assert not verify_user("test", "bad", path=db)
