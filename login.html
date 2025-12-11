@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In - Clinician Notes Automator</title>
-
     <link rel="stylesheet" href="summaryDeco.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
 <body>
 
     <!-- NAVBAR -->
     <nav class="navbar">
         <h2>Clinician Notes → Summary Automator</h2>
-       
     </nav>
 
     <!-- LOGIN CONTAINER -->
@@ -42,28 +39,28 @@
                 <span>or</span>
             </div>
 
-            <!-- EMAIL INPUT -->
-            <input type="email" placeholder="Email" class="login-input">
+            <!-- USERNAME INPUT -->
+            <input type="text" placeholder="Username" class="login-input" id="usernameInput">
 
             <!-- PASSWORD INPUT -->
             <div class="password-field">
-                <input type="password" placeholder="Password" class="login-input">
+                <input type="password" placeholder="Password" class="login-input" id="passwordInput">
                 <i class="fa-solid fa-eye-slash toggle-password"></i>
             </div>
 
             <a href="#" class="forgot-link">Forgot password?</a>
 
             <!-- LOGIN BUTTON -->
-            <button class="login-btn" onclick="window.location.href='Summary.html'">Log in</button>
+            <button class="login-btn" id="loginBtn">Log in</button>
 
             <p class="signup-text">Don't have an account? <a href="createProfile.html">Sign up</a></p>
         </div>
     </div>
 
-    <!-- FOOTER -->
     <footer class="footer">
         Tech Titans - Healthcare AI Hackathon Project
     </footer>
 
+    <script src="login.js"></script>
 </body>
 </html>

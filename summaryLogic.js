@@ -1,150 +1,107 @@
 // =======================
-//  GET ELEMENTS
+//  SUMMARY HANDLING
 // =======================
+
 const notesInput = document.getElementById("notesInput");
 const summaryOutput = document.getElementById("summaryOutput");
-
 const summariseBtn = document.getElementById("summariseBtn");
-const uploadBtn = document.getElementById("uploadBtn");
-const downloadBtn = document.getElementById("downloadBtn");
 const copyBtn = document.getElementById("copyBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+const summaryTypeSelect = document.getElementById("summaryType");
+const spinnerOverlay = document.getElementById("spinnerOverlay");
 
 // =======================
-// HANDLE SUMMARISE BUTTON
+//  COPY / DOWNLOAD HELPERS
 // =======================
 
+// Copy text to clipboard
+copyBtn.addEventListener("click", () => {
+    if (!summaryOutput.value) return alert("No summary to copy.");
+    summaryOutput.select();
+    navigator.clipboard.writeText(summaryOutput.value)
+        .then(() => alert("Summary copied!"))
+        .catch(err => console.error(err));
+});
+
+// Download text as .txt
+downloadBtn.addEventListener("click", () => {
+    if (!summaryOutput.value) return alert("No summary to download.");
+    const blob = new Blob([summaryOutput.value], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "AI_Summary.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+});
+
+// =======================
+//  SUMMARISE LOGIC
+// =======================
 summariseBtn.addEventListener("click", async () => {
-
     const notes = notesInput.value.trim();
-
-    if (notes === "") {
-        alert("Please enter clinician notes before summarising.");
+    if (!notes) {
+        alert("Please enter clinician notes.");
         return;
     }
 
-    // Show loading
-    summaryOutput.value = "Summarizing... please wait...";
+    spinnerOverlay.style.display = "flex";
+
+    const summaryType = summaryTypeSelect.value;
+    const endpoint = summaryType === "patient"
+        ? "http://127.0.0.1:5000/api/patient-summary"
+        : "http://127.0.0.1:5000/api/clinical-summary";
 
     try {
-        // BACKEND API CALL (Flask + Ollama)
-        const response = await fetch("http://127.0.0.1:5000/api/summarize", {
+        const response = await fetch(endpoint, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ notes: notes })
+            credentials: "include",
+            body: JSON.stringify({ notes })
         });
 
         const data = await response.json();
 
-        summaryOutput.value = data.summary || "No summary was returned.";
-    }
-    catch (error) {
-        summaryOutput.value = "Error contacting server. Make sure Flask is running.";
-        console.error(error);
-    }
-});
-
-// =======================
-// UPLOAD FILE
-// =======================
-
-uploadBtn.addEventListener("click", () => {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".txt, .docx, .pdf";
-
-    fileInput.onchange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        // ⚠️ Use correct reader depending on file type
-        const fileName = file.name.toLowerCase();
-
-        // 1️⃣ Handle TXT
-        if (fileName.endsWith(".txt")) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                notesInput.value = reader.result;
-            };
-            reader.readAsText(file);
+        if (!response.ok) {
+            summaryOutput.value = "";
+            alert(data.error || "Failed to generate summary.");
+            return;
         }
 
-        // 2️⃣ Handle DOCX
-        else if (fileName.endsWith(".docx")) {
-            const arrayBuffer = await file.arrayBuffer();
-            mammoth.extractRawText({ arrayBuffer: arrayBuffer })
-                .then(result => {
-                    notesInput.value = result.value;
-                })
-                .catch(err => {
-                    alert("Error reading Word document");
-                    console.error(err);
-                });
-        }
+        // Get proper key
+        let summaryText = data.summary || data.patient_summary || "";
 
-        // 3️⃣ Handle PDF
-        else if (fileName.endsWith(".pdf")) {
-            readPDF(file);
-        }
-    };
+        // ===============================
+        //  NEW FORMATTING RULES
+        // ===============================
+        const lines = summaryText.split(/\r?\n/);
 
-    fileInput.click();
-});
+        const formatted = lines.map(line => {
+            const trimmed = line.trim();
 
-// PDF READER FUNCTION
-async function readPDF(file) {
-    const fileReader = new FileReader();
+            // Keep bold headers EXACTLY as they are
+            if (/^\*\*.+\*\*:?$/.test(trimmed)) {
+                return trimmed; // Already a bold section heading
+            }
 
-    fileReader.onload = async function () {
-        const typedarray = new Uint8Array(this.result);
+            // Lines starting with '+' keep them
+            if (trimmed.startsWith("+")) return trimmed;
 
-        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        let text = "";
+            // Lines starting with '*' keep them
+            if (trimmed.startsWith("*")) return trimmed;
 
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            const pageText = content.items.map(item => item.str).join(" ");
-            text += pageText + "\n\n";
-        }
+            // Otherwise: make into a bullet
+            return `* ${trimmed}`;
 
-        notesInput.value = text;
-    };
+        }).join("\n");
 
-    fileReader.readAsArrayBuffer(file);
-}
+        summaryOutput.value = formatted;
 
-// =======================
-//  DOWNLOAD SUMMARY (as TXT)
-// =======================
-
-downloadBtn.addEventListener("click", () => {
-    const summaryText = summaryOutput.value.trim();
-
-    if (summaryText === "") {
-        alert("No summary to download.");
-        return;
+    } catch (err) {
+        console.error(err);
+        summaryOutput.value = "";
+        alert("Unable to contact server. Make sure Flask is running.");
+    } finally {
+        spinnerOverlay.style.display = "none";
     }
-
-    const blob = new Blob([summaryText], { type: "text/plain" });
-    const link = document.createElement("a");
-
-    link.download = "AI_summary.txt";
-    link.href = URL.createObjectURL(blob);
-    link.click();
-});
-
-// =======================
-//  COPY SUMMARY TO CLIPBOARD
-// =======================
-
-copyBtn.addEventListener("click", () => {
-    const summary = summaryOutput.value.trim();
-
-    if (!summary) {
-        alert("No summary to copy.");
-        return;
-    }
-
-    navigator.clipboard.writeText(summary);
-    alert("Summary copied!");
 });
